@@ -1,0 +1,17 @@
+Pikaohje sertifikaattien purkamiseen.
+=====================================
+
+Voidaksesi käyttää .pfx päätteistä sertifikaattia työkalun kanssa, se
+on purettava alkuperäisiin komponentteihin (.pfx vain paketoi nuo
+kaksi .pem tiedostoa yhdeksi).
+
+Purkamiseen tarvitset sertifikaatin mukana tulleen salasanan.
+
+Purkukomennot:
+--------------
+openssl pkcs12 -clcerts -nokeys -in B2BUserCER.pfx -out cert.pem
+openssl pkcs12 -nocerts -in B2BUserCER.pfx -out key.pem
+openssl rsa -in key.pem -out key_nopass.pem
+
+Purkamisen jälkeen kopioi cert.pem ja key_nopass.pem certs hakemistoon
+josta työkalu ne löytää automaattisesti.

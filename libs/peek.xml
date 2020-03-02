@@ -1,0 +1,7 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" 
+    xmlns:urn="urn:cms:b2b:v01">
+    <soap:Header/>
+    <soap:Body>
+        <urn:PeekMessageRequest/>
+    </soap:Body>
+</soap:Envelope>

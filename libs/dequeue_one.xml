@@ -1,0 +1,9 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" 
+    xmlns:urn="urn:cms:b2b:v01">
+    <soap:Header/>
+    <soap:Body>
+        <urn:DequeueMessageRequest>
+            <urn:DocumentReferenceNumber>f009ff83-8c4a-49a3-aee2-20ef018a3fa3</urn:DocumentReferenceNumber>
+        </urn:DequeueMessageRequest>
+    </soap:Body>
+</soap:Envelope>

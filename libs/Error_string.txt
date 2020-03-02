@@ -1,0 +1,12 @@
+General Failure
+Message validation failed
+System configuration error
+User not authorized for system function
+Unknown request
+Back-end timeout
+The provided Ids are not unique or have been used before
+Unknown or invalid message reference
+Message content unsecure
+User not authorized for organisation
+URL not correct
+Unknown System Function

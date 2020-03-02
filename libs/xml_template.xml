@@ -1,0 +1,129 @@
+<ns0:Envelope xmlns:ns0="http://www.w3.org/2003/05/soap-envelope" 
+	      xmlns:ns1="urn:cms:b2b:v01" 
+	      xmlns:ns2="urn:fi:Datahub:mif:masterdata:E58_MasterDataMPEvent:v1" 
+	      xmlns:ns3="urn:fi:Datahub:mif:common:HDR_Header:elements:v1" 
+	      xmlns:ns4="urn:fi:Datahub:mif:common:PEC_ProcessEnergyContext:elements:v1" 
+	      xmlns:ns5="urn:fi:Datahub:mif:masterdata:E58_MasterDataMPEvent:elements:v1">
+   <ns0:Header />
+   <ns0:Body>
+      <ns1:ProcessMessageRequest>
+         
+         <ns1:MessageContainer>
+            <ns1:Payload>
+               
+               <ns2:MasterDataMPEventMessage>
+                  <ns2:MasterDataMPEvent>
+                     <ns2:Header>
+                        <ns3:Identification>18521A0301155d284b30a4b93085715c315e</ns3:Identification>
+                        <ns3:DocumentType>E58</ns3:DocumentType>
+                        <ns3:Creation>2019-07-31T12:59:13Z</ns3:Creation>
+                        <ns3:PhysicalSenderEnergyParty>
+                           <ns3:Identification schemeAgencyIdentifier="9">6427020100000</ns3:Identification>
+                        </ns3:PhysicalSenderEnergyParty>
+                        <ns3:JuridicalSenderEnergyParty>
+                           <ns3:Identification schemeAgencyIdentifier="9">6427020100000</ns3:Identification>
+                        </ns3:JuridicalSenderEnergyParty>
+                        <ns3:JuridicalRecipientEnergyParty>
+                           <ns3:Identification schemeAgencyIdentifier="9">6410000000001</ns3:Identification>
+                        </ns3:JuridicalRecipientEnergyParty>
+                        <ns3:PhysicalRecipientEnergyParty>
+                           <ns3:Identification schemeAgencyIdentifier="9">6410000000001</ns3:Identification>
+                        </ns3:PhysicalRecipientEnergyParty>
+                        
+                        <ns3:SenderRoutingInformation />
+                     </ns2:Header>
+                     <ns2:ProcessEnergyContext>
+                        <ns4:EnergyBusinessProcess>DH-121</ns4:EnergyBusinessProcess>
+                        <ns4:EnergyBusinessProcessRole>DDZ</ns4:EnergyBusinessProcessRole>
+                        <ns4:EnergyIndustryClassification>23</ns4:EnergyIndustryClassification>
+                     </ns2:ProcessEnergyContext>
+                     <ns2:Transaction>
+                        <ns5:StartOfOccurrence>2019-07-30T21:00:00Z</ns5:StartOfOccurrence>
+                        
+                        <ns5:OriginalBusinessDocumentReference />
+                        
+                        <ns5:OriginalBusinessDocumentSender schemeAgencyIdentifier="9" />
+                        
+                        <ns5:Description>Free-form
+			description</ns5:Description>
+                        <ns5:MeteringPointUsedDomainLocation>
+                           <ns5:Identification schemeAgencyIdentifier="9">640102010013199221</ns5:Identification>
+                           
+                           <ns5:PhysicalStatusType listAgencyIdentifier="NFI">AE01</ns5:PhysicalStatusType>
+                           
+                           <ns5:MeteringPointType listAgencyIdentifier="NFI">AG01</ns5:MeteringPointType>
+                           
+                           <ns5:MeteringPointSubType listAgencyIdentifier="NFI">AQ01</ns5:MeteringPointSubType>
+                           
+                           <ns5:RemoteConnectable>1</ns5:RemoteConnectable>
+                           
+                           <ns5:MeterIdentification>12345</ns5:MeterIdentification>
+                           
+                           <ns5:RelatedMeteringPoint schemeAgencyIdentifier="9" />
+                           <ns5:MeteringGridAreaUsedDomainLocation>
+                              <ns5:Identification schemeAgencyIdentifier="305">6401020100000000</ns5:Identification>
+                           </ns5:MeteringGridAreaUsedDomainLocation>
+                           
+                           <ns5:MeteringPointAddress>
+                              <ns5:Type listAgencyIdentifier="NFI">AF01</ns5:Type>
+                              
+                              <ns5:StreetName>StreetName1</ns5:StreetName>
+                              
+                              <ns5:BuildingNumber>111</ns5:BuildingNumber>
+                              
+                              <ns5:FloorIdentification>1234567890</ns5:FloorIdentification>
+                              
+                              <ns5:RoomIdentification>01</ns5:RoomIdentification>
+                              
+                              <ns5:Postcode>00100</ns5:Postcode>
+                              
+                              <ns5:CityName>Helsinki</ns5:CityName>
+                              
+                              <ns5:CountryCode schemeAgencyIdentifier="5">FI</ns5:CountryCode>
+                              
+                              <ns5:AddressFreeForm>First column from
+			      the left looking from the
+			      bridge</ns5:AddressFreeForm>
+                              
+                              <ns5:Language schemeAgencyIdentifier="5">fi</ns5:Language>
+                           </ns5:MeteringPointAddress>
+                           <ns5:MPPositionMeteringPointGeographicalCoordinate>
+                              <ns5:Latitude>60.169857</ns5:Latitude>
+                              <ns5:Longitude>24.938379</ns5:Longitude>
+                           </ns5:MPPositionMeteringPointGeographicalCoordinate>
+                           
+                           <ns5:MPDetailMeteringPointCharacteristic>
+                              
+                              <ns5:RemoteReadable>1</ns5:RemoteReadable>
+                              
+                              <ns5:MeteringMethod>E13</ns5:MeteringMethod>
+                              
+                              <ns5:UserGroup>BE01</ns5:UserGroup>
+                              
+                              <ns5:HeatingMethodType>0</ns5:HeatingMethodType>
+                              
+                              <ns5:FuseSize>2x3x63</ns5:FuseSize>
+                              
+                              <ns5:ContractedConnectionCapacity>200.00</ns5:ContractedConnectionCapacity>
+                              
+                              <ns5:TaxCategory>0</ns5:TaxCategory>
+                              
+                              <ns5:EstimatedMetrics>
+                                 <ns5:MeterTimeFrame>E11</ns5:MeterTimeFrame>
+                                 <ns5:Total>5000</ns5:Total>
+                              </ns5:EstimatedMetrics>
+                              <ns5:EstimatedMetrics>
+                                 <ns5:MeterTimeFrame>E10</ns5:MeterTimeFrame>
+                                 <ns5:Total>6000</ns5:Total>
+                              </ns5:EstimatedMetrics>
+                           </ns5:MPDetailMeteringPointCharacteristic>
+                           
+                         </ns5:MeteringPointUsedDomainLocation>
+                       </ns2:Transaction>
+                     </ns2:MasterDataMPEvent>
+		   </ns2:MasterDataMPEventMessage>
+		 </ns1:Payload>
+               </ns1:MessageContainer>
+	     </ns1:ProcessMessageRequest>
+	   </ns0:Body>
+	 </ns0:Envelope>

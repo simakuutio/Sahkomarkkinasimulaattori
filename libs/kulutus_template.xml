@@ -1,0 +1,77 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" 
+	       xmlns:urn="urn:cms:b2b:v01" 
+	       xmlns:urn1="urn:fi:Datahub:mif:metering:E66_EnergyTimeSeries:v1" 
+	       xmlns:urn2="urn:fi:Datahub:mif:common:HDR_Header:elements:v1" 
+	       xmlns:urn3="urn:fi:Datahub:mif:common:PEC_ProcessEnergyContext:elements:v1" 
+	       xmlns:urn4="urn:fi:Datahub:mif:metering:E66_EnergyTimeSeries:elements:v1" 
+	       xmlns:urn5="urn:fi:Datahub:mif:metering:F08_RequestMeasuredDataInfo:v1" 
+	       xmlns:urn6="urn:fi:Datahub:mif:metering:F08_RequestMeasuredDataInfo:elements:v1" 
+	       xmlns:urn7="urn:fi:Datahub:mif:invoicing:F13_InvoicingDataInfo:v1" 
+	       xmlns:urn8="urn:fi:Datahub:mif:invoicing:F13_InvoicingDataInfo:elements:v1">
+	<soap:Header/>
+	<soap:Body>
+		<urn:SendMessageRequest>
+			<!--Optional:-->
+			<urn:MessageContainer>
+				<urn:Payload>
+					<!--You have a CHOICE of the next 3 items at this level-->
+					<urn1:EnergyTimeSeriesMessage>
+						<urn1:EnergyTimeSeries>
+							<urn1:Header>
+								<urn2:Identification>6357a11d-ba89-4412-a47c-7de50aa8d96d</urn2:Identification>
+								<urn2:DocumentType>E66</urn2:DocumentType>
+								<urn2:Creation>2019-10-07T14:04:35Z</urn2:Creation>
+								<urn2:PhysicalSenderEnergyParty>
+									<urn2:Identification schemeAgencyIdentifier="9">6406020100005</urn2:Identification>
+								</urn2:PhysicalSenderEnergyParty>
+								<urn2:JuridicalSenderEnergyParty>
+									<urn2:Identification schemeAgencyIdentifier="9">6406020100005</urn2:Identification>
+								</urn2:JuridicalSenderEnergyParty>
+								<urn2:JuridicalRecipientEnergyParty>
+									<urn2:Identification schemeAgencyIdentifier="9">6410000000001</urn2:Identification>
+								</urn2:JuridicalRecipientEnergyParty>
+								<urn2:PhysicalRecipientEnergyParty>
+									<urn2:Identification schemeAgencyIdentifier="9">6410000000001</urn2:Identification>
+								</urn2:PhysicalRecipientEnergyParty>
+								<!--Optional:-->
+								<urn2:SenderRoutingInformation>myroutinginformation</urn2:SenderRoutingInformation>
+							</urn1:Header>
+							<urn1:ProcessEnergyContext>
+								<urn3:EnergyBusinessProcess>DH-211</urn3:EnergyBusinessProcess>
+								<urn3:EnergyBusinessProcessRole>MDR</urn3:EnergyBusinessProcessRole>
+								<urn3:EnergyIndustryClassification>23</urn3:EnergyIndustryClassification>
+							</urn1:ProcessEnergyContext>
+							<!--1 or more repetitions:-->
+							<urn1:Transaction>
+								<urn4:UniqueIdentification>fb57402b-7d11-4e31-998f-4b2f44e14572</urn4:UniqueIdentification>
+								<!--Optional:-->
+								<urn4:Identification>MyIdentification</urn4:Identification>
+								<urn4:ObservationPeriodTimeSeriesPeriod>
+									<!--Optional:-->
+									<urn4:ResolutionDuration>PT1H</urn4:ResolutionDuration>
+									<urn4:Start>2019-10-06T12:00:00Z</urn4:Start>
+									<urn4:End>2019-10-07T12:00:00Z</urn4:End>
+								</urn4:ObservationPeriodTimeSeriesPeriod>
+								<urn4:ProductIncludedProductCharacteristic>
+									<urn4:Identification>8716867000030</urn4:Identification>
+									<urn4:UnitType>kWh</urn4:UnitType>
+								</urn4:ProductIncludedProductCharacteristic>
+								<urn4:MPDetailMeasurementMeteringPointCharacteristic>
+									<urn4:MeteringPointType>F01</urn4:MeteringPointType>
+								</urn4:MPDetailMeasurementMeteringPointCharacteristic>
+								<urn4:MeteringPointUsedDomainLocation>
+									<urn4:Identification schemeAgencyIdentifier="9">640602010298819727</urn4:Identification>
+								</urn4:MeteringPointUsedDomainLocation>
+								<!--Optional:-->
+								<urn4:MeteringGridAreaUsedDomainLocation>
+									<urn4:Identification schemeAgencyIdentifier="305">6406020100000000</urn4:Identification>
+								</urn4:MeteringGridAreaUsedDomainLocation>
+								<!--Kulutus-->
+							</urn1:Transaction>
+						</urn1:EnergyTimeSeries>
+					</urn1:EnergyTimeSeriesMessage>
+				</urn:Payload>
+			</urn:MessageContainer>
+		</urn:SendMessageRequest>
+	</soap:Body>
+</soap:Envelope>
