@@ -19,7 +19,7 @@ pytz               Kalenteri kirjasto
 
 (asennus: pip3 install kirjastonnimi)
 
-Huoh. Jos työkalun haluaa toimiva myös muilla kuin omalla käyttäjällä, kannattaa kirjastot asentaa pääkäyttäjänä unix:ssa.
+Huom. Jos työkalun haluaa toimiva myös muilla kuin omalla käyttäjällä, kannattaa kirjastot asentaa pääkäyttäjänä unix:ssa.
 
 Tiedostot/hakemistot
 ====================
