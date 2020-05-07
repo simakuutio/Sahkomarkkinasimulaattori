@@ -60,7 +60,8 @@ def dequeue():
     tree.find(ns+'DocumentReferenceNumber').text = storage['docref']
     tree.write(target)
     with open(target, 'r') as f:
-        response = requests.post(putsiurl,data=f,headers=headers, cert=("certs/cert.pem", "certs/key_nopass.pem"))
+        dequeuexml = f.read()
+        response = requests.post(putsiurl,data=dequeuexml,headers=headers, cert=("certs/cert.pem", "certs/key_nopass.pem"))
         Response1 = response.content.decode("utf-8")
     print (storage['docref'],'peeked and dequeued.')
 
