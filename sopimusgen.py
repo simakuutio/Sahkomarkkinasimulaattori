@@ -7,6 +7,8 @@ except ImportError:
     print('Error: kirjasto.py missing, please consult Fingrid Datahub test team to get new one!')
     exit()
 
+import xml.etree.ElementTree as ET # Ensure ET is imported globally
+
 storage = {}
 
 def main():
@@ -17,8 +19,7 @@ def produce_xml():
     Input: integer, integer
     Output: file
     """
-    from xml.etree import ElementTree as et
-    import random as ra
+    import random as ra # et is already imported globally as ET
     import os
     ns2 = './/{urn:fi:Datahub:mif:common:HDR_Header:elements:v1}'
     ns3 = './/{urn:fi:Datahub:mif:common:PEC_ProcessEnergyContext:elements:v1}'
@@ -27,7 +28,15 @@ def produce_xml():
     datafile = 'libs/sopimus_template.xml'
     if not os.path.exists('xml'):
         os.makedirs('xml')
-    tree = et.parse(datafile)
+    try:
+        tree = ET.parse(datafile)
+    except FileNotFoundError:
+        print(f"Error: XML template file '{datafile}' not found. Cannot produce XML.")
+        return
+    except ET.ParseError as e:
+        print(f"Error: Failed to parse XML template '{datafile}': {e}. Cannot produce XML.")
+        return
+
     tree.find(ns2+'Identification').text = gen_id(True)
     tree.find(ns2+'PhysicalSenderEnergyParty')[0].text = storage['ddq']
     tree.find(ns2+'JuridicalSenderEnergyParty')[0].text = storage['ddq']
@@ -41,8 +50,12 @@ def produce_xml():
     tree.find(ns12+'ConsumerInvolvedCustomerParty')[0].text = hetu()
     tree.find(ns12+'Name').text = henkilo()
     
-    datafile = 'xml/sopimus_{}.xml'.format(storage['ap'])
-    tree.write(datafile)
+    output_datafile = 'xml/sopimus_{}.xml'.format(storage['ap'])
+    try:
+        tree.write(output_datafile)
+    except IOError as e:
+        print(f"Error: Failed to write XML to '{output_datafile}': {e}")
+        return
 
 def hetu(start=1900, end=1999):
     """
@@ -74,12 +87,19 @@ def henkilo():
     Output: string
     """
     from random import choice, randint
-    if randint(0,1):
-        etunimi = choice(list(open('libs/mies.txt'))).strip()
-    else: 
-        etunimi = choice(list(open('libs/nainen.txt'))).strip()
-    sukunimi = choice(list(open('libs/sukunimet.txt'))).strip()
-    return("{} {}".format(etunimi, sukunimi))
+    try:
+        if randint(0,1):
+            with open('libs/mies.txt', 'r') as f_mies:
+                etunimi = choice(list(f_mies)).strip()
+        else:
+            with open('libs/nainen.txt', 'r') as f_nainen:
+                etunimi = choice(list(f_nainen)).strip()
+        with open('libs/sukunimet.txt', 'r') as f_sukunimet:
+            sukunimi = choice(list(f_sukunimet)).strip()
+        return("{} {}".format(etunimi, sukunimi))
+    except FileNotFoundError as e:
+        print(f"Error: Name list file not found: {e.filename}. Cannot generate person name.")
+        return "Nimi Puuttuu"
 
 def puhelin():
     """
@@ -103,11 +123,16 @@ def selector():
         with open(kp_file,'r') as f:
             next(f)
             for line in f:
-                storage['ap'] = line.split(',')[0]
-                storage['ddq'] = line.split(',')[2]
-                storage['dso'] = line.split(',')[3]
-                storage['mga'] = line.split(',')[4]
-                produce_xml()
+                try:
+                    parts = line.split(',')
+                    storage['ap'] = parts[0]
+                    storage['ddq'] = parts[2]
+                    storage['dso'] = parts[3]
+                    storage['mga'] = parts[4]
+                    produce_xml()
+                except IndexError:
+                    print(f"Error: Malformed line in kp.csv: '{line.strip()}'. Skipping this entry.")
+                    continue
 
     except FileNotFoundError:
         print('Error: kp.csv missing, please run kpgen to create new one.')

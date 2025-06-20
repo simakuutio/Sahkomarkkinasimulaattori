@@ -215,9 +215,7 @@ def apoint_gen(jvy=None, kp_lkm=None, mga=None, aptype=None, remote =None, metho
         if id_range <= 90000000:
             vakio = id_range
         else:
-            print('Error: id_range maximum value is 90000000')
-            print('Please fix value in fconfig.py')
-            exit()
+            raise ValueError("Configuration error: id_range in fconfig.py exceeds the maximum value of 90000000.")
     else:
         vakio = ra.randint(1,90000000)
     klista = []
@@ -294,6 +292,9 @@ def output_apoint(jvy, kp_lkm, mga, aptype, remote, method):
         exit()
 
     try:
+        if not dealers:
+            print("Error: No dealers configured in fconfig.py. Please check the 'dealers' list.")
+            exit()
         kplista = apoint_gen(jvy, kp_lkm, mga, aptype, remote, method)
         if os.path.exists('kp.csv'):
             kp_done = True
@@ -318,9 +319,13 @@ def output_apoint(jvy, kp_lkm, mga, aptype, remote, method):
                                                                     storage['type'],
                                                                     storage['remote'],
                                                                     storage['method'] ))
-    except TypeError:
-        print('Error: please add at least one dealer to config file!')
-        exit()
+    # The TypeError was primarily for ra.choice(dealers) if dealers is empty.
+    # The explicit check for dealers above should cover this.
+    # If other TypeErrors are possible, they should be caught more specifically.
+    # For now, removing the broad TypeError catch.
+    # except TypeError:
+    #     print('Error: please add at least one dealer to config file!')
+    #     exit()
 
 def main(argv):
     import getopt
@@ -360,10 +365,17 @@ def main(argv):
                 print('Usage:')
                 print('kpgen.py -j <DSO> -m <MGA> -l <number of accounting points> -t type (AG01/AG02) -r remote readable (0/1) -M metering method (E13/E14/E16)')
                 exit()
-
-        output_apoint(jvy, kp_lkm, mga, aptype, remote, method)
+        try:
+            output_apoint(jvy, kp_lkm, mga, aptype, remote, method)
+        except ValueError as e:
+            print(f"Error: {e}")
+            exit(1)
     else:
-        output_apoint(None, None, None, None, None, None)
+        try:
+            output_apoint(None, None, None, None, None, None)
+        except ValueError as e:
+            print(f"Error: {e}")
+            exit(1)
 
 if __name__ == "__main__":
     try:
