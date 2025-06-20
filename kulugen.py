@@ -10,6 +10,7 @@ import csv
 from os import name
 from getopt import getopt
 from cmd import Cmd
+import xml.etree.ElementTree as ET
 
 # Colors works properly on *nix
 if name == 'posix':
@@ -159,14 +160,14 @@ def finalize_xml(datafile, dso, apoint):
     Input: integer, integer, integer
     Output: file
     """
-    from xml.etree import ElementTree as et
+    import xml.etree.ElementTree as ET
     import random as ra
     ns1 = './/{urn:fi:Datahub:mif:metering:E66_EnergyTimeSeries:v1}'
     ns3 = './/{urn:fi:Datahub:mif:common:HDR_Header:elements:v1}'
     ns4 = './/{urn:fi:Datahub:mif:common:PEC_ProcessEnergyContext:elements:v1}'
     ns5 = './/{urn:fi:Datahub:mif:metering:E66_EnergyTimeSeries:elements:v1}'
     try:
-        tree = et.parse(datafile)
+        tree = ET.parse(datafile)
         tree.find(ns3+'Identification').text = generate_id(32)
         tree.find(ns1+'Transaction')[0].text = generate_id(32)
         tree.find(ns3+'PhysicalSenderEnergyParty')[0].text = dso
@@ -180,8 +181,12 @@ def finalize_xml(datafile, dso, apoint):
         tree.find(ns5+'MeteringGridAreaUsedDomainLocation')[0].text = storage['mga']
 
         tree.write(datafile)
-    except Exception as err:
-        print(red,'Error:',err,reset)
+    except FileNotFoundError:
+        print(red, f"Error: File not found - {datafile}", reset)
+    except ET.ParseError as e:
+        print(red, f"Error: XML parsing error in {datafile} - {e}", reset)
+    except IOError:
+        print(red, f"Error: File I/O error with {datafile}", reset)
 
 def generate_rpoint_xml(rpoint, date, insert_string):
     in_file = 'libs/rajapiste_template.xml'
@@ -203,14 +208,13 @@ def finalize_rpoint_xml(datafile, dso, rpoint):
     Input: integer, integer, integer
     Output: file
     """
-    from xml.etree import ElementTree as et
     import random as ra
     ns1 = './/{urn:fi:Datahub:mif:metering:E66_EnergyTimeSeries:v1}'
     ns3 = './/{urn:fi:Datahub:mif:common:HDR_Header:elements:v1}'
     ns4 = './/{urn:fi:Datahub:mif:common:PEC_ProcessEnergyContext:elements:v1}'
     ns5 = './/{urn:fi:Datahub:mif:metering:E66_EnergyTimeSeries:elements:v1}'
     try:
-        tree = et.parse(datafile)
+        tree = ET.parse(datafile)
         tree.find(ns3+'Identification').text = generate_id(32)
         tree.find(ns1+'Transaction')[0].text = generate_id(32)
         tree.find(ns3+'PhysicalSenderEnergyParty')[0].text = dso
@@ -223,9 +227,13 @@ def finalize_rpoint_xml(datafile, dso, rpoint):
         tree.find(ns5+'OutAreaUsedDomainLocation')[0].text = storage['out']
 
         tree.write(datafile)
-    except Exception as err:
-        print(red,'Error:',err,reset)
-        
+    except FileNotFoundError:
+        print(red, f"Error: File not found - {datafile}", reset)
+    except ET.ParseError as e:
+        print(red, f"Error: XML parsing error in {datafile} - {e}", reset)
+    except IOError:
+        print(red, f"Error: File I/O error with {datafile}", reset)
+
 def generate_id(length):
     import random as rand
     symbols = "abcdef1234567890"
@@ -660,10 +668,9 @@ class Prompt(Cmd):
                         else:
                             print(magenta,'{} is not valid accounting point.'.format(params[1]))
                             print(reset, end='')
-                    except:
-                        e = sys.exc_info()[0]
-                        print(red,'Exception',e,reset)
-                        
+                    except (FileNotFoundError, ValueError, IndexError) as e:
+                        print(red, f'Error setting accounting point: {e}', reset)
+
                 # Sets day to start (format dd.mm.yyyy)
                 elif params[0] == set_commands[1]:
                     try:
@@ -807,9 +814,8 @@ class Prompt(Cmd):
                             else:
                                 print(magenta,'{} is not valid MGA.'.format(params[1]))
                                 print(reset, end='')
-                        except:
-                            e = sys.exc_info()[0]
-                            print(red,'Exception',e,reset)
+                        except IndexError as e:
+                            print(red, f'Error setting MGA: {e}', reset)
                     else:
                         print(magenta,'Accounting point have to set first',reset)
             else:
@@ -863,8 +869,8 @@ def main(argv):
     if len(sys.argv)>1:
         try:
             opts, args = getopt(argv,"chs:d:",["date=","days="])
-        #except getopt.GetoptError:
-        except:
+        except getopt.GetoptError as e:
+            print(red, f'Error parsing arguments: {e}', reset)
             print (cyan,'kulugen.py -s <start date> -d <number of days>',reset)
             exit()
         

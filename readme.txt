@@ -9,6 +9,8 @@ simuloida pienimuotoista sähkömarkkinaa käyttöpaikkoineen ja
 kulutuksineen. Työkalu on toteutettu Pythonilla ja se koostuu
 muutamasta komponentista.
 
+Ohjelmiston virheenkäsittelyä on parannettu kauttaaltaan, mikä tekee siitä vakaamman ja antaa selkeämpiä ilmoituksia mahdollisissa ongelmatilanteissa.
+
 Ympäristövaatimukset
 ====================
 MaSi vaatii toimiakseen Python 3.4 (tai uudempi). Lisäksi tarvitaan
