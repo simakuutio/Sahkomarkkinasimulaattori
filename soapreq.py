@@ -95,11 +95,10 @@ def fake(n): # This function seems to be for testing only, can be kept or remove
 
 def thread_loop(block_size):
     dprint('thread_loop({})'.format(block_size)) # Uses local dprint
-    from threading import Thread, Lock # threading was not imported at top
+    from threading import Thread # threading was not imported at top
     import time # time was not imported at top
     counter = 0
     success = 0
-    lock = Lock()
 
     paikat = []
     for apoint in sorted(xml_dir("apoint")):
@@ -107,17 +106,21 @@ def thread_loop(block_size):
 
     dprint(f'Paikkoja: {len(paikat)}') # Uses local dprint
     if len(paikat) != 0:
-        with lock:
-            uusi = iter(paikat)
-            for i in range(1,len(paikat)+1):
-                n = next(uusi)
-                t1 = Thread(target=send_generic, args=(n,'DSO')) # Using imported send_generic
-                # t1 = Thread(target=fake, args=(n,)) # for dry testing
-                t1.start()
-                counter += 1
-                print(f'Thread {counter} started, sending {n}')
-                if counter == block_size:
-                    counter = 0
+        active_threads = []
+        for n in paikat:
+            t1 = Thread(target=send_generic, args=(n,'DSO')) # Using imported send_generic
+            # t1 = Thread(target=fake, args=(n,)) # for dry testing
+            t1.start()
+            active_threads.append(t1)
+            counter += 1
+            print(f'Thread {counter} started, sending {n}')
+            if counter == block_size:
+                for t in active_threads:
+                    t.join()
+                active_threads = []
+                counter = 0
+        for t in active_threads:
+            t.join()
         print('\n')
         success = 1
     else:
@@ -130,21 +133,22 @@ def thread_loop(block_size):
     if len(sopimukset) != 0 and success:
         print('Waiting few moments before next phase...')
         time.sleep(30)
-        with lock:
-            try:
-                uusi = iter(sopimukset)
+        counter = 0
+        active_threads = []
+        for n in sopimukset:
+            t2 = Thread(target=send_generic, args=(n,'DDQ')) # Using imported send_generic
+            #t2 = Thread(target=fake, args=(n,)) # for dry testing
+            t2.start()
+            active_threads.append(t2)
+            counter += 1
+            print(f'Thread {counter} started, sending {n}')
+            if counter == block_size:
+                for t in active_threads:
+                    t.join()
+                active_threads = []
                 counter = 0
-                for i in range(1, len(sopimukset)+1):
-                    n = next(uusi)
-                    t2 = Thread(target=send_generic, args=(n,'DDQ')) # Using imported send_generic
-                    #t2 = Thread(target=fake, args=(n,)) # for dry testing
-                    t2.start()
-                    counter += 1
-                    print(f'Thread {counter} started, sending {n}')
-                    if counter == block_size:
-                        counter = 0
-            except StopIteration:
-                print('\n')
+        for t in active_threads:
+            t.join()
         
 if __name__ == "__main__":
     try:

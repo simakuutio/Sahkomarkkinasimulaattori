@@ -84,11 +84,10 @@ def fake(n): # Test function, can be kept or removed.
 
 def thread_loop(block_size):
     dprint('thread_loop({})'.format(block_size)) # Uses local dprint
-    from threading import Thread, Lock # threading was not imported at top
+    from threading import Thread # threading was not imported at top
     import time # time was not imported at top
     counter = 0
     success = 0
-    lock = Lock()
 
     paikat = []
     for kulutus in sorted(xml_dir("kulutus")):
@@ -96,17 +95,21 @@ def thread_loop(block_size):
 
     dprint(f'Paikkoja: {len(paikat)}') # Uses local dprint
     if len(paikat) != 0:
-        with lock:
-            uusi = iter(paikat)
-            for i in range(1,len(paikat)+1):
-                n = next(uusi)
-                t1 = Thread(target=send_generic, args=(n,'DSO')) # Using imported send_generic
-                # t1 = Thread(target=fake, args=(n,)) # for dry testing
-                t1.start()
-                counter += 1
-                print(f'Thread {counter} started, sending {n}')
-                if counter == block_size:
-                    counter = 0
+        active_threads = []
+        for n in paikat:
+            t1 = Thread(target=send_generic, args=(n,'DSO')) # Using imported send_generic
+            # t1 = Thread(target=fake, args=(n,)) # for dry testing
+            t1.start()
+            active_threads.append(t1)
+            counter += 1
+            print(f'Thread {counter} started, sending {n}')
+            if counter == block_size:
+                for t in active_threads:
+                    t.join()
+                active_threads = []
+                counter = 0
+        for t in active_threads:
+            t.join()
         print('\n')
         success = 1
     else:
